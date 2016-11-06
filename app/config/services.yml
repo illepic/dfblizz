@@ -7,3 +7,6 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.wow_api:
+        class: AppBundle\Utils\WoWApi
+        arguments: ['%app.wow_api.blizzard_key%', '%app.wow_api.blizzard_secret%']
