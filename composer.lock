@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e0162c8c6fbfaf9e564061ad097fd325",
-    "content-hash": "f1bc5cbc0d2450b2165342c5b537530d",
+    "hash": "460ae2261269308cfc259affc0066e2c",
+    "content-hash": "3adbcb9f5588bc5723131313067c00c5",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1049,16 +1049,16 @@
         },
         {
             "name": "logansua/blizzard-api-php-client",
-            "version": "dev-symfony3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/illepic/blizzard-api-php-client.git",
-                "reference": "08952a3e4a74d400de140c17b0f63eca273cdfd7"
+                "url": "https://github.com/LogansUA/blizzard-api-php-client.git",
+                "reference": "9d7c7bdfcb6a5b4964f267c8d8ae8c8ca115dd47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illepic/blizzard-api-php-client/zipball/08952a3e4a74d400de140c17b0f63eca273cdfd7",
-                "reference": "08952a3e4a74d400de140c17b0f63eca273cdfd7",
+                "url": "https://api.github.com/repos/LogansUA/blizzard-api-php-client/zipball/9d7c7bdfcb6a5b4964f267c8d8ae8c8ca115dd47",
+                "reference": "9d7c7bdfcb6a5b4964f267c8d8ae8c8ca115dd47",
                 "shasum": ""
             },
             "require": {
@@ -1089,9 +1089,10 @@
                 "world of warcraft"
             ],
             "support": {
-                "source": "https://github.com/illepic/blizzard-api-php-client/tree/dev-symfony3"
+                "source": "https://github.com/LogansUA/blizzard-api-php-client/tree/master",
+                "issues": "https://github.com/LogansUA/blizzard-api-php-client/issues"
             },
-            "time": "2016-11-06 03:58:26"
+            "time": "2016-11-06 17:07:57"
         },
         {
             "name": "monolog/monolog",
@@ -1575,16 +1576,16 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "2.11.1",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "e7caf4936c7be82bc6d68df87f1d23a0d5bf6e00"
+                "reference": "6acef3bd201c4f35e42e52dedf1fe088f30e07e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/e7caf4936c7be82bc6d68df87f1d23a0d5bf6e00",
-                "reference": "e7caf4936c7be82bc6d68df87f1d23a0d5bf6e00",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/6acef3bd201c4f35e42e52dedf1fe088f30e07e8",
+                "reference": "6acef3bd201c4f35e42e52dedf1fe088f30e07e8",
                 "shasum": ""
             },
             "require": {
@@ -1631,7 +1632,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2016-04-13 16:21:01"
+            "time": "2016-11-06 18:54:50"
         },
         {
             "name": "symfony/polyfill-apcu",

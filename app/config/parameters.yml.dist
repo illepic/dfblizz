@@ -17,3 +17,7 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # The Blizzard API application keys from your account at https://dev.battle.net/apps/mykeys
+    app.wow_api.blizzard_key: ''
+    app.wow_api.blizzard_secret: ''

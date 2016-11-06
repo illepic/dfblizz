@@ -28,7 +28,7 @@
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
-        "logansua/blizzard-api-php-client": "dev-symfony3"
+        "logansua/blizzard-api-php-client": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -65,7 +65,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/illepic/blizzard-api-php-client"
+            "url": "https://github.com/LogansUA/blizzard-api-php-client"
         }
     ]
 }
