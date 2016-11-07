@@ -10,7 +10,6 @@ namespace AppBundle\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
-use AppBundle\Utils\Character;
 
 /**
  * Class CharacterCreator
@@ -30,11 +29,6 @@ class CharacterCreator
     public $characters = [];
 
     /**
-     *
-     */
-    private $wow;
-
-    /**
      * CharacterCreator constructor.
      * @param \AppBundle\Utils\WoWApi $api
      * @param $config
@@ -43,19 +37,12 @@ class CharacterCreator
     {
         // See /app/config/config.yml:parameters.dfblizz
         $this->config = $config;
+        // Init Blizzard client
+        $this->wow = $api->getClient();
         // Init Characters
         $this->charactersInit();
-
-        //$this->wow = $api->getClient();
-        //
-        //$response = $this->wow->getCharacter('gorgonnash', 'elapsed', [
-        //    'fields' => '',
-        //]);
-        //
-        //$character_data = $response->getBody()->getContents();
-        //
-        //$character = new Character($character_data);
-        //$character->dataDump();
+        // Hit api and load up character data
+        $this->charactersRetrieve();
 
         //$fs = new Filesystem();
         //
@@ -70,12 +57,26 @@ class CharacterCreator
         // Nuke
         $this->characters = [];
         // From config, set the base data needed for a Character
-        foreach ($this->config['characters'] as $character)
+        foreach ($this->config['characters'] as $config_character)
         {
-            $this->characters[] = new Character($character['name'], $character['server']);
+            $this->characters[] = new Character($config_character['name'], $config_character['server']);
         }
 
         return $this;
+    }
+
+    public function charactersRetrieve()
+    {
+        foreach ($this->characters as $character)
+        {
+            print_r($character->name);
+
+            $response = $this->wow->getCharacter($character->realm, $character->name, [
+                'fields' => '',
+            ]);
+            print_r($response->getBody()->getContents());
+            $character->setData($response->getBody()->getContents());
+        }
     }
 
     /**
@@ -86,8 +87,13 @@ class CharacterCreator
         return count($this->characters);
     }
 
+    public function dump()
+    {
+        print_r($this->characters);
+        return $this;
+    }
     /**
-     * Write out the array of Chracters to the filesystem as a json
+     * Write out the array of Characters to the filesystem as a json
      */
     public function writeOut()
     {

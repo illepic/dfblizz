@@ -26,7 +26,7 @@ class AppGetBlizzDataCommand extends ContainerAwareCommand
     {
         $creator = $this->getContainer()->get('app.character_creator');
 
-        $output->writeln('Check files!');
+        $output->writeln("There are {$creator->getCount()} Characters!");
 
     }
 

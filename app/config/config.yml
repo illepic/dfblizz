@@ -9,13 +9,14 @@ parameters:
     locale: en
     dfblizz:
         output_dir: "./"
+        top_key: "characters"
         characters:
             - {server: gorgonnash, name: elapsed}
             - {server: gorgonnash, name: hackman}
             - {server: gorgonnash, name: talisdar}
             - {server: gorgonnash, name: valphie}
             - {server: gorgonnash, name: shadowind}
-            - {server: gorgonnash, name: taldoor}
+            - {server: gorgonnash, name: taladoor}
 
 framework:
     #esi:             ~
