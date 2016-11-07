@@ -13,7 +13,7 @@ use BlizzardApi\Service\WorldOfWarcraft;
 
 class WoWApi
 {
-    public $wow;
+    private $wow;
 
     /**
      * WoWApi constructor.
@@ -26,4 +26,7 @@ class WoWApi
         $this->wow = new WorldOfWarcraft($client->setAccessToken($secret));
     }
 
+    public function getClient() {
+        return $this->wow;
+    }
 }

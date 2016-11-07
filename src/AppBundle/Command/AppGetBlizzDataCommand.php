@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class AppGetBlizzDataCommand extends ContainerAwareCommand
 {
 
@@ -18,22 +17,16 @@ class AppGetBlizzDataCommand extends ContainerAwareCommand
             ->setName('app:get-blizz-data')
             ->setDescription('Query the Blizzard API to return to be written to disk')
 //            ->addArgument('key', InputArgument::REQUIRED, 'Blizzard API key')
-//            ->addArgument('secret', InputArgument::REQUIRED, 'Blizzard API secret')
 //            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
         ;
-
 
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $api = $this->getContainer()->get('app.wow_api');
-        $response = $api->wow->getCharacter('gorgonnash', 'elapsed', [
-           'fields' => '',
-        ]);
+        $creator = $this->getContainer()->get('app.character_creator');
 
-        $output->writeln('Hello');
-        $output->writeln($response->getBody()->getContents());
+        $output->writeln('Check files!');
 
     }
 

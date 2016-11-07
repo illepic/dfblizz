@@ -7,6 +7,15 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    dfblizz:
+        output_dir: "./"
+        characters:
+            - {server: gorgonnash, name: elapsed}
+            - {server: gorgonnash, name: hackman}
+            - {server: gorgonnash, name: talisdar}
+            - {server: gorgonnash, name: valphie}
+            - {server: gorgonnash, name: shadowind}
+            - {server: gorgonnash, name: taldoor}
 
 framework:
     #esi:             ~
