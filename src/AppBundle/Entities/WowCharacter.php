@@ -2,25 +2,39 @@
 
 namespace AppBundle\Entities;
 
+class WowCharacter implements CharacterInterface
+{
+    private $data;
 
-class WowCharacter implements CharacterInterface {
+    public function __construct(String $json)
+    {
+        $this->parseJson($json);
+    }
 
-  private $name;
-  private $json;
+    public function log()
+    {
+        return $this->data;
+    }
 
-  public function __construct($json)
-  {
-    print_r($json);
-  }
+    /**
+     * @param String $json
+     * @return $this
+     * @internal param String $data, json string to turn into array on object here
+     */
+    public function parseJson(String $json)
+    {
+        $this->data = json_decode($json, true);
 
-  public function log()
-  {
-    return $this->name;
-  }
+        return $this;
+    }
 
-  public function parseJson(Array $data)
-  {
-    $this->json = $data;
-    return $this;
-  }
+    public function single(String $key)
+    {
+        return $this->data[$key];
+    }
+
+    public function all()
+    {
+        return $this->data;
+    }
 }

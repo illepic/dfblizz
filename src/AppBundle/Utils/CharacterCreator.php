@@ -4,6 +4,8 @@ namespace AppBundle\Utils;
 
 use AppBundle\Api\WoWApi;
 use AppBundle\Entities\CharacterFactory;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class CharacterCreator
@@ -22,11 +24,11 @@ class CharacterCreator
      */
     public $characters = [];
 
-  /**
-   * CharacterCreator constructor
-   * @param \AppBundle\Api\WoWApi $api
-   * @param $config
-   */
+    /**
+     * CharacterCreator constructor
+     * @param \AppBundle\Api\WoWApi $api
+     * @param $config
+     */
     public function __construct(WoWApi $api, $config)
     {
         // See /app/config/config.yml:parameters.dfblizz
@@ -36,15 +38,9 @@ class CharacterCreator
 
         // Init Characters
         $this->charactersInit();
-        // Hit api and load up character data
-//        $this->charactersRetrieve();
 
-        //$fs = new Filesystem();
-        //
-        //try {
-        //    $fs->dumpFile('./test.json', $character_data);
-        //}
-        //catch(IOException $e) { }
+        // Write all characters to json file
+        $this->toJson();
     }
 
     public function charactersInit()
@@ -53,31 +49,51 @@ class CharacterCreator
         $this->characters = [];
         // From config, set the base data needed for a Character
         foreach ($this->config['characters'] as $config_character) {
-          print_r($config_character);
-          $response = $this->wow->getCharacter($config_character['realm'], $config_character['name'], [
-            'fields' => '',
-          ]);
-          print_r($response->getBody()->getContents());
-//          $this->characters[] = CharacterFactory::get($response->getBody()->getContents());
+            echo "Requesting {$config_character['name']}".PHP_EOL;
+
+            $response = $this->wow->getCharacter(
+                $config_character['realm'],
+                $config_character['name'],
+                [
+                    'fields' => implode(',', $this->config['fields'])
+                ]
+            );
+
+            $status = $response->getStatusCode();
+            if ($status === 200) {
+                $character = CharacterFactory::get(
+                    $response->getBody()->getContents()
+                );
+                $this->characters[] = $character;
+                echo "{$character->single('name')} created!".PHP_EOL;
+            } else {
+                echo "Failed! Response: $status.".PHP_EOL;
+            }
         }
 
-//        print_r($this->characters);
+        print_r($this->characters[0]->single('name'));
+
         return $this;
     }
 
-//    public function charactersRetrieve()
-//    {
-//        foreach ($this->characters as $character)
-//        {
-//            print_r($character->name);
-//
-//            $response = $this->wow->getCharacter($character->realm, $character->name, [
-//                'fields' => '',
-//            ]);
-//            print_r($response->getBody()->getContents());
-//            $character->setData($response->getBody()->getContents());
-//        }
-//    }
+    public function toJson()
+    {
+        $top_key = $this->config['top_key'];
+        $out = array($top_key => array());
+
+        foreach ($this->characters as $character) {
+            $out[$top_key][$character->single('name')] = $character->all();
+        }
+
+        print_r($out);
+
+        $fs = new Filesystem();
+
+        try {
+            $fs->dumpFile('./test.json', json_encode($out));
+        }
+        catch(IOException $e) { }
+    }
 
     /**
      * @return int
@@ -91,12 +107,5 @@ class CharacterCreator
     {
         print_r($this->characters);
         return $this;
-    }
-    /**
-     * Write out the array of Characters to the filesystem as a json
-     */
-    public function writeOut()
-    {
-
     }
 }
