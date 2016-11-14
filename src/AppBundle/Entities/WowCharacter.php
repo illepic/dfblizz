@@ -37,4 +37,6 @@ class WowCharacter implements CharacterInterface
     {
         return $this->data;
     }
+
+
 }

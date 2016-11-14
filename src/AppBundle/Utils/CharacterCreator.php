@@ -4,6 +4,7 @@ namespace AppBundle\Utils;
 
 use AppBundle\Api\WoWApi;
 use AppBundle\Entities\CharacterFactory;
+use AppBundle\Entities\WowCharacter;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -55,7 +56,7 @@ class CharacterCreator
                 $config_character['realm'],
                 $config_character['name'],
                 [
-                    'fields' => implode(',', $this->config['fields'])
+                    'fields' => implode(',', $this->config['fields']),
                 ]
             );
 
@@ -78,21 +79,32 @@ class CharacterCreator
 
     public function toJson()
     {
-        $top_key = $this->config['top_key'];
-        $out = array($top_key => array());
-
-        foreach ($this->characters as $character) {
-            $out[$top_key][$character->single('name')] = $character->all();
-        }
-
-        print_r($out);
+        /**
+         * e.g.
+         * array(
+         *      'characters' => array(
+         *          array('name' => 'Elapsed', 'race' => 3),
+         *          array('name' => 'Taldoor', 'race' => 3,
+         *      )
+         * );
+         */
+        $out = array(
+            $this->config['top_key'] => array_map(
+                function (WowCharacter $character) {
+                    return $character->all();
+                },
+                $this->characters
+            ),
+        );
 
         $fs = new Filesystem();
-
         try {
-            $fs->dumpFile('./test.json', json_encode($out));
+            $fs->dumpFile(
+                $this->config['output_dir'].'characters.json',
+                json_encode($out)
+            );
+        } catch (IOException $e) {
         }
-        catch(IOException $e) { }
     }
 
     /**
@@ -106,6 +118,7 @@ class CharacterCreator
     public function dump()
     {
         print_r($this->characters);
+
         return $this;
     }
 }

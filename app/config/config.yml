@@ -8,16 +8,18 @@ imports:
 parameters:
     locale: en
     dfblizz:
+        # This is relative to root of project, "./" dumps at root, "../" dumps a folder above root
         output_dir: "./"
         top_key: "characters"
         characters:
             - {realm: gorgonnash, name: elapsed}
             - {realm: gorgonnash, name: hackman}
             - {realm: gorgonnash, name: talisdar}
-#            - {realm: gorgonnash, name: valphie}
-#            - {realm: gorgonnash, name: shadowind}
-#            - {realm: gorgonnash, name: taladoor}
-        fields: []
+            - {realm: gorgonnash, name: valphie}
+            - {realm: gorgonnash, name: shadowind}
+            - {realm: gorgonnash, name: taladoor}
+        fields:
+            - talents
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }
