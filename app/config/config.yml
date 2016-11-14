@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: blizzard.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -11,13 +12,12 @@ parameters:
         output_dir: "./"
         top_key: "characters"
         characters:
-            - {server: gorgonnash, name: elapsed}
-            - {server: gorgonnash, name: hackman}
-            - {server: gorgonnash, name: talisdar}
-            - {server: gorgonnash, name: valphie}
-            - {server: gorgonnash, name: shadowind}
-            - {server: gorgonnash, name: taladoor}
-
+            - {realm: gorgonnash, name: elapsed}
+            - {realm: gorgonnash, name: hackman}
+            - {realm: gorgonnash, name: talisdar}
+            - {realm: gorgonnash, name: valphie}
+            - {realm: gorgonnash, name: shadowind}
+            - {realm: gorgonnash, name: taladoor}
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }

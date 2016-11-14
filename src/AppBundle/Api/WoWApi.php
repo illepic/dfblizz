@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: illepic
- * Date: 11/6/16
- * Time: 7:33 AM
- */
 
-namespace AppBundle\Utils;
+namespace AppBundle\Api;
 
 use BlizzardApi\BlizzardClient;
 use BlizzardApi\Service\WorldOfWarcraft;

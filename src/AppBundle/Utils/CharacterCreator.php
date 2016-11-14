@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: illepic
- * Date: 11/6/16
- * Time: 11:43 AM
- */
 
 namespace AppBundle\Utils;
 
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOException;
+use AppBundle\Api\WoWApi;
+use AppBundle\Entities\CharacterFactory;
 
 /**
  * Class CharacterCreator
@@ -28,21 +22,22 @@ class CharacterCreator
      */
     public $characters = [];
 
-    /**
-     * CharacterCreator constructor.
-     * @param \AppBundle\Utils\WoWApi $api
-     * @param $config
-     */
+  /**
+   * CharacterCreator constructor
+   * @param \AppBundle\Api\WoWApi $api
+   * @param $config
+   */
     public function __construct(WoWApi $api, $config)
     {
         // See /app/config/config.yml:parameters.dfblizz
         $this->config = $config;
         // Init Blizzard client
         $this->wow = $api->getClient();
+
         // Init Characters
         $this->charactersInit();
         // Hit api and load up character data
-        $this->charactersRetrieve();
+//        $this->charactersRetrieve();
 
         //$fs = new Filesystem();
         //
@@ -57,27 +52,32 @@ class CharacterCreator
         // Nuke
         $this->characters = [];
         // From config, set the base data needed for a Character
-        foreach ($this->config['characters'] as $config_character)
-        {
-            $this->characters[] = new Character($config_character['name'], $config_character['server']);
+        foreach ($this->config['characters'] as $config_character) {
+          print_r($config_character);
+          $response = $this->wow->getCharacter($config_character['realm'], $config_character['name'], [
+            'fields' => '',
+          ]);
+          print_r($response->getBody()->getContents());
+//          $this->characters[] = CharacterFactory::get($response->getBody()->getContents());
         }
 
+//        print_r($this->characters);
         return $this;
     }
 
-    public function charactersRetrieve()
-    {
-        foreach ($this->characters as $character)
-        {
-            print_r($character->name);
-
-            $response = $this->wow->getCharacter($character->realm, $character->name, [
-                'fields' => '',
-            ]);
-            print_r($response->getBody()->getContents());
-            $character->setData($response->getBody()->getContents());
-        }
-    }
+//    public function charactersRetrieve()
+//    {
+//        foreach ($this->characters as $character)
+//        {
+//            print_r($character->name);
+//
+//            $response = $this->wow->getCharacter($character->realm, $character->name, [
+//                'fields' => '',
+//            ]);
+//            print_r($response->getBody()->getContents());
+//            $character->setData($response->getBody()->getContents());
+//        }
+//    }
 
     /**
      * @return int
@@ -97,5 +97,6 @@ class CharacterCreator
      */
     public function writeOut()
     {
+
     }
 }
