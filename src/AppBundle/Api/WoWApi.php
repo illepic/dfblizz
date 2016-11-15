@@ -20,6 +20,9 @@ class WoWApi
         $this->wow = new WorldOfWarcraft($client->setAccessToken($secret));
     }
 
+    /**
+     * @return \BlizzardApi\Service\WorldOfWarcraft
+     */
     public function getClient() {
         return $this->wow;
     }
