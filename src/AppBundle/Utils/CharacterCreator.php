@@ -2,8 +2,6 @@
 
 namespace AppBundle\Utils;
 
-use AppBundle\Api\WoWApi;
-use AppBundle\Entities\CharacterFactory;
 use AppBundle\Entities\WowCharacter;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,60 +19,20 @@ class CharacterCreator
     public $config;
 
     /**
-     * @var array $characters Collection of Character objects
-     */
-    public $characters = [];
-
-    /**
      * CharacterCreator constructor
-     * @param \AppBundle\Api\WoWApi $api
-     * @param $config
+     * @param \AppBundle\Utils\CharacterManager $manager
+     * @param array $config
      */
-    public function __construct(WoWApi $api, $config)
+    public function __construct(CharacterManager $manager, Array $config)
     {
         // See /app/config/config.yml:parameters.dfblizz
         $this->config = $config;
-        // Init Blizzard client
-        $this->wow = $api->getClient();
 
         // Init Characters
-        $this->charactersInit();
+        $manager->retrieveAllCharacters($this->config['characters']);
 
         // Write all characters to json file
-        $this->toJson();
-    }
-
-    public function charactersInit()
-    {
-        // Nuke
-        $this->characters = [];
-        // From config, set the base data needed for a Character
-        foreach ($this->config['characters'] as $config_character) {
-            echo "Requesting {$config_character['name']}".PHP_EOL;
-
-            $response = $this->wow->getCharacter(
-                $config_character['realm'],
-                $config_character['name'],
-                [
-                    'fields' => implode(',', $this->config['fields']),
-                ]
-            );
-
-            $status = $response->getStatusCode();
-            if ($status === 200) {
-                $character = CharacterFactory::get(
-                    $response->getBody()->getContents()
-                );
-                $this->characters[] = $character;
-                echo "{$character->single('name')} created!".PHP_EOL;
-            } else {
-                echo "Failed! Response: $status.".PHP_EOL;
-            }
-        }
-
-        print_r($this->characters[0]->single('name'));
-
-        return $this;
+        //$this->toJson();
     }
 
     public function toJson()
