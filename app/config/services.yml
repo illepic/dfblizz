@@ -10,9 +10,11 @@ services:
     app.wow_api:
         class: AppBundle\Api\WoWApi
         arguments: ['%app.wow_api.blizzard_key%', '%app.wow_api.blizzard_secret%']
+    app.process_character:
+        class: AppBundle\Process\ProcessCharacter
     app.character_manager:
         class: AppBundle\Utils\CharacterManager
-        arguments: ['@app.wow_api']
+        arguments: ['@app.wow_api', '@app.process_character']
     app.character_creator:
         class: AppBundle\Utils\CharacterCreator
         arguments: ['@app.character_manager', '%dfblizz%']

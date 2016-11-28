@@ -5,24 +5,26 @@ namespace AppBundle\Utils;
 
 use AppBundle\Api\WoWApi;
 use AppBundle\Entities\CharacterFactory;
+use AppBundle\Entities\WowCharacter;
+use AppBundle\Process\ProcessCharacter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CharacterManager
 {
 
     private $characters = [];
-    private $wowapi;
+    //private $wowapi;
 
     /**
      * CharacterManager constructor.
      * @param \AppBundle\Api\WoWApi $api
+     * @param \AppBundle\Process\ProcessCharacter $process
      */
-    public function __construct(WoWApi $api)
+    public function __construct(WoWApi $api, ProcessCharacter $process)
     {
         // Init Blizzard client
         $this->wowapi = $api->getClient();
-
-        //print_r($this->characters[2]->single('name'));
+        $this->process = $process;
     }
 
     /**
@@ -32,12 +34,12 @@ class CharacterManager
      * @param String $name
      * @return string
      */
-    public function lookupCharacter(String $realm, String $name)
+    public function lookupCharacter(String $realm, String $name, Array $fields)
     {
         $response = $this->wowapi->getCharacter(
             $realm,
             $name,
-            [] // fields here
+            ['fields' => implode(',', $fields)] // fields here
         ); // @TODO: fields
 
         if (200 === $response->getStatusCode()) {
@@ -66,12 +68,19 @@ class CharacterManager
             // json
             $raw = $this->lookupCharacter(
                 $character_info['realm'],
-                $character_info['name']
+                $character_info['name'],
+                $character_info['fields'] // array
             );
+
             // Character object
             $character = CharacterFactory::get($raw);
+
+            // Run the character data through a process to remove cruft
+            $character->modify($this->process);
+
             // Add to local array
             $this->characters[] = $character;
+
             // Simple notification
             echo("{$character->single('name')} retrieved successfully!".PHP_EOL);
         }
@@ -101,12 +110,13 @@ class CharacterManager
 
     /**
      * Dump json of all characters
+     * @return string
      */
     public function dumpCharactersJson()
     {
         return json_encode(
             array_map(
-                function ($character) {
+                function (WowCharacter $character) {
                     return $character->all();
                 },
                 $this->characters,

@@ -12,14 +12,36 @@ parameters:
         output_dir: "./"
         top_key: "characters"
         characters:
-            - {realm: gorgonnash, name: elapsed}
-            - {realm: gorgonnash, name: hackman}
-            - {realm: gorgonnash, name: talisdar}
-            - {realm: gorgonnash, name: valphie}
-            - {realm: gorgonnash, name: shadowind}
-            - {realm: gorgonnash, name: taladoor}
-        fields:
-            - talents
+            -
+                realm: gorgonnash
+                name: elapsed
+                fields:
+                    - talents
+            -
+                realm: gorgonnash
+                name: hackman
+                fields:
+                    - talents
+            -
+                realm: gorgonnash
+                name: talisdar
+                fields:
+                    - talents
+            -
+                realm: gorgonnash
+                name: valphie
+                fields:
+                    - talents
+            -
+                realm: gorgonnash
+                name: shadowind
+                fields:
+                    - talents
+            -
+                realm: gorgonnash
+                name: taladoor
+                fields:
+                    - talents
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }

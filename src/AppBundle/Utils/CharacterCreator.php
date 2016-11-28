@@ -33,7 +33,6 @@ class CharacterCreator
 
         // Init Characters
         $this->manager->retrieveAllCharacters($this->config['characters']);
-
         print_r($this->manager->getAllCharacters());
 
         // Write all characters to json file

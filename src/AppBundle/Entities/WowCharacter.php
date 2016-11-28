@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entities;
 
+use AppBundle\Process\ProcessCharacter;
+
 class WowCharacter implements CharacterInterface
 {
     private $data;
@@ -59,4 +61,13 @@ class WowCharacter implements CharacterInterface
         return json_encode($this->data);
     }
 
+    /**
+     * Screw with data to make it more sensible with crazy fields
+     *
+     * @param \AppBundle\Process\ProcessCharacter $process
+     */
+    public function modify(ProcessCharacter $process)
+    {
+        $this->data = $process->process($this->data);
+    }
 }
