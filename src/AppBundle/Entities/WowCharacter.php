@@ -28,15 +28,35 @@ class WowCharacter implements CharacterInterface
         return $this;
     }
 
+    /**
+     * Pull a single value from a Character
+     *
+     * @param String $key
+     * @return mixed
+     */
     public function single(String $key)
     {
         return $this->data[$key];
     }
 
+
+    /**
+     * Dump all data from Character raw
+     *
+     * @return mixed
+     */
     public function all()
     {
         return $this->data;
     }
 
+    /**
+     * Dump this data as json
+     * @return string
+     */
+    public function dumpJson()
+    {
+        return json_encode($this->data);
+    }
 
 }

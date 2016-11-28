@@ -71,3 +71,4 @@ fabric.properties
 # *.ipr
 
 php_errors.log
+characters.json

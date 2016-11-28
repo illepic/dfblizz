@@ -5,28 +5,24 @@ namespace AppBundle\Utils;
 
 use AppBundle\Api\WoWApi;
 use AppBundle\Entities\CharacterFactory;
-use AppBundle\Entities\WowCharacter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CharacterManager
 {
 
     private $characters = [];
-    private $wow;
+    private $wowapi;
 
     /**
      * CharacterManager constructor.
      * @param \AppBundle\Api\WoWApi $api
-     * @param array $config
      */
-    public function __construct(WoWApi $api, Array $config)
+    public function __construct(WoWApi $api)
     {
         // Init Blizzard client
-        $this->wow = $api->getClient();
-        // Retrieve
-        //$this->retrieveAllCharacters($config['characters']);
+        $this->wowapi = $api->getClient();
 
-        print_r($this->characters[2]->single('name'));
+        //print_r($this->characters[2]->single('name'));
     }
 
     /**
@@ -38,10 +34,10 @@ class CharacterManager
      */
     public function lookupCharacter(String $realm, String $name)
     {
-        $response = $this->wow->getCharacter(
+        $response = $this->wowapi->getCharacter(
             $realm,
             $name,
-            []
+            [] // fields here
         ); // @TODO: fields
 
         if (200 === $response->getStatusCode()) {
@@ -52,26 +48,18 @@ class CharacterManager
     }
 
     /**
-     * Use CharacterFactory to make a Character object
+     * Take config array of characters and use wowapi to find each
+     * Array looks like:
+     *  array(
+     *      'characters' => array(
+     *          array('name' => 'Elapsed', 'race' => 3),
+     *          array('name' => 'Taldoor', 'race' => 3,
+     *      )
+     *  );
      *
-     * @param String $json
-     * @return \AppBundle\Entities\WowCharacter
+     * @param array $characters
+     * @return $this
      */
-    public function createCharacter(String $json)
-    {
-        return CharacterFactory::get($json);
-    }
-
-    /**
-     * Add Character to local array
-     *
-     * @param \AppBundle\Entities\WowCharacter $character
-     */
-    public function addCharacter(WowCharacter $character)
-    {
-        $this->characters[] = $character;
-    }
-
     public function retrieveAllCharacters(Array $characters)
     {
         foreach ($characters as $character_info) {
@@ -81,11 +69,49 @@ class CharacterManager
                 $character_info['name']
             );
             // Character object
-            $character = $this->createCharacter($raw);
+            $character = CharacterFactory::get($raw);
             // Add to local array
-            $this->addCharacter($character);
+            $this->characters[] = $character;
+            // Simple notification
+            echo("{$character->single('name')} retrieved successfully!".PHP_EOL);
         }
 
         return $this;
+    }
+
+    /**
+     * Return raw array
+     *
+     * @return array
+     */
+    public function getAllCharacters()
+    {
+        return $this->characters;
+    }
+
+    /**
+     * Return count of total characters
+     *
+     * @return int
+     */
+    public function getCharactersCount()
+    {
+        return count($this->characters);
+    }
+
+    /**
+     * Dump json of all characters
+     */
+    public function dumpCharactersJson()
+    {
+        return json_encode(
+            array_map(
+                function ($character) {
+                    return $character->all();
+                },
+                $this->characters,
+                []
+            )
+        );
     }
 }

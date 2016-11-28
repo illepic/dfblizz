@@ -2,7 +2,6 @@
 
 namespace AppBundle\Utils;
 
-use AppBundle\Entities\WowCharacter;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -17,6 +16,7 @@ class CharacterCreator
      * @var
      */
     public $config;
+    public $manager;
 
     /**
      * CharacterCreator constructor
@@ -28,54 +28,33 @@ class CharacterCreator
         // See /app/config/config.yml:parameters.dfblizz
         $this->config = $config;
 
+        // Using CharacterManger
+        $this->manager = $manager;
+
         // Init Characters
-        $manager->retrieveAllCharacters($this->config['characters']);
+        $this->manager->retrieveAllCharacters($this->config['characters']);
+
+        print_r($this->manager->getAllCharacters());
 
         // Write all characters to json file
-        //$this->toJson();
+        $this->writeJson();
     }
 
-    public function toJson()
+    public function writeJson()
     {
-        /**
-         * e.g.
-         * array(
-         *      'characters' => array(
-         *          array('name' => 'Elapsed', 'race' => 3),
-         *          array('name' => 'Taldoor', 'race' => 3,
-         *      )
-         * );
-         */
-        $out = array(
-            $this->config['top_key'] => array_map(
-                function (WowCharacter $character) {
-                    return $character->all();
-                },
-                $this->characters
-            ),
-        );
-
         $fs = new Filesystem();
         try {
             $fs->dumpFile(
                 $this->config['output_dir'].'characters.json',
-                json_encode($out)
+                $this->manager->dumpCharactersJson()
             );
         } catch (IOException $e) {
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getCount()
-    {
-        return count($this->characters);
-    }
-
     public function dump()
     {
-        print_r($this->characters);
+        print_r($this->manager->getAllCharacters());
 
         return $this;
     }
