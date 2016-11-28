@@ -3,6 +3,7 @@ dfblizz
 
 ## To get started
 
-2. `composer install`
-3. Fill out `characters.yml` of WoW characters you'd like to retrieve as a json array
+1. `composer install`
+2. Fill in key/secret during composer install
+3. Fill out `dfblizz` key in config.yml to declare the characters you want to turn into json
 4. Run `php bin/console app:get-blizz-data`
