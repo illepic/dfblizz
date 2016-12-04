@@ -9,7 +9,7 @@ parameters:
     locale: en
     dfblizz:
         # This is relative to root of project, "./" dumps at root, "../" dumps a folder above root
-        output_dir: "./"
+        output_dir: "/home/illepic/dev/downfall-guild/project/build/dev/d8/themes/custom/patternlab/source/_data/"
         top_key: "characters"
         characters:
             -

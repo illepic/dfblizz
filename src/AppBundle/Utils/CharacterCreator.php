@@ -12,9 +12,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class CharacterCreator
 {
 
-    /**
-     * @var
-     */
     public $config;
     public $manager;
 
@@ -33,12 +30,14 @@ class CharacterCreator
 
         // Init Characters
         $this->manager->retrieveAllCharacters($this->config['characters']);
-        print_r($this->manager->getAllCharacters());
 
         // Write all characters to json file
         $this->writeJson();
     }
 
+    /**
+     * Write out any Characters from the manger to the directory from config
+     */
     public function writeJson()
     {
         $fs = new Filesystem();
